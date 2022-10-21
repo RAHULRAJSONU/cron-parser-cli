@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'io.github.rahulrajsonu'
+version '1.0-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    baseName = 'cronparser'
+    version =  '1.0-SNAPSHOT'
+    manifest {
+        attributes(
+                'Main-Class': 'io.github.rahulrajsonu.CronParser'
+        )
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
