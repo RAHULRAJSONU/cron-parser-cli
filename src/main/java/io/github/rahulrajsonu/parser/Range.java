@@ -1,9 +1,8 @@
 package io.github.rahulrajsonu.parser;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class Range extends io.github.rahulrajsonu.parser.Base {
 
@@ -22,32 +21,52 @@ public class Range extends io.github.rahulrajsonu.parser.Base {
         "Range does not have valid expression : " + this.segment.getExpression());
     }
 
-    if (rangeLimits.get(1) < rangeLimits.get(0)) {
-      throw new RuntimeException(
-        "Range minimum/maximum are in wrong order. maximum should be : " + rangeLimits.get(0)
-          + " and minimum should be : " + rangeLimits.get(1));
-    }
-
-    if (rangeLimits.get(0) < this.segment.getMinimum()) {
+    if (getMin(rangeLimits) < this.segment.getMinimum()) {
       throw new RuntimeException(
         "Range minimum is not valid. Given : " + rangeLimits.get(0) + " Min allowed : "
           + this.segment.getMinimum());
     }
 
-    if (rangeLimits.get(0) > this.segment.getMaximum()) {
+    if (getMin(rangeLimits) > this.segment.getMaximum()) {
       throw new RuntimeException(
         "Range minimum is not valid. Given : " + rangeLimits.get(0) + " Max allowed : "
           + this.segment.getMaximum());
     }
 
-    if (rangeLimits.get(1) > this.segment.getMaximum()) {
+    if (getMax(rangeLimits) > this.segment.getMaximum()) {
       throw new RuntimeException(
         "Range maximum is not valid. Given : " + rangeLimits.get(1) + " Max allowed : "
           + this.segment.getMaximum());
     }
 
-    return Arrays.stream(IntStream.range(rangeLimits.get(0), rangeLimits.get(1) + 1).toArray())
-      .boxed().collect(
-        Collectors.toList());
+    return getRange(rangeLimits.get(0),rangeLimits.get(1),this.segment.getMinimum(),this.segment.getMaximum());
   }
+
+  private int getMin(List<Integer> range){
+    return range.stream().min((i,j)->i-j).get();
+  }
+
+  private int getMax(List<Integer> range){
+    return range.stream().max((i,j)->i-j).get();
+  }
+
+  private List<Integer> getRange(int start, int stop,int min, int max){
+    int i=start;
+    int step = 0;
+    if(start < stop)
+      step = stop-start+1;
+    else
+      step = (max-start+2)+(stop-min);
+    List<Integer> range = new ArrayList<>();
+    while (step > 0){
+      range.add(i);
+      if(i==max){
+        i=min-1;
+      }
+      i++;
+      step--;
+    }
+    return range;
+  }
+
 }

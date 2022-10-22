@@ -10,14 +10,15 @@ public class List extends io.github.rahulrajsonu.parser.Base {
 
   @Override
   public java.util.List<Integer> generatePossibilities() {
-    String[] lists = this.segment.getExpression().split(",");
+    String[] list = this.segment.getExpression().split(",");
 
-    if (lists.length != 2) {
+    int numOfVVariable = (segment.getMaximum()- segment.getMinimum())+1;
+    if (list.length > numOfVVariable) {
       throw new RuntimeException(
         "List does not have valid expression : " + this.segment.getExpression());
     }
 
-    return java.util.List.of(lists).stream()
+    return java.util.List.of(list).stream()
       .flatMap(l -> {
         try {
           return io.github.rahulrajsonu.parser.Base.get(new io.github.rahulrajsonu.segment.Base(l) {

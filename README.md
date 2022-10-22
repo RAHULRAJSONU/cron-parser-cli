@@ -5,6 +5,10 @@ Command line application to parse a cron string and expands each field to show t
 ```
 $ ./cronparser.sh "*/15 0 1,15 * 1-5 /usr/bin/find"
 ```
+## Another input
+```
+"*/15 0 1,15,18 * 1-5 /usr/bin/find"
+```
 ## Expected output for the input given avobe
 ```
 minute        0 15 30 45
